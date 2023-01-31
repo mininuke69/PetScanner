@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial ss(3, 2); // RX, TX
+SoftwareSerial ss(9, 10); // RX, TX
 
 
 void setup() {
@@ -13,8 +13,6 @@ void setup() {
 
 void loop() {
   if (ss.available()) {
-    Serial.write(ss.read());  
-  }  +
-
+      Serial.write(ss.read());
+  }
 }
-
