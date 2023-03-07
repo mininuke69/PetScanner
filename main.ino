@@ -14,7 +14,4 @@ void setup() {
 
 void loop() {
   if (ss.available()) {Serial.write(ss.read());}
-
-
-
 }
