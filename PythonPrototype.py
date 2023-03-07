@@ -13,7 +13,7 @@ while input != exit:
 	for barcode in barcodes:
 		if barcode = input:
 			print("Bien!")
-			pass
+			break
 	inputYN = input("Kon de code niet vinden, wil je hem toevoegen? (y/n)"
 	if inputYN == "y":
 		
