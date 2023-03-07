@@ -2,12 +2,37 @@
 #include <SPI.h>
 #include <SD.h>
 
-SoftwareSerial ss(9, 10); // RX, TX
+SoftwareSerial ss(9, 8); // RX, TX
+File EAN_file;
+File log_file;
+File l;
 
 
 void setup() {
   Serial.begin(9600);
   ss.begin(9600);
+
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    while (1);
+  }    
+
+
+  EAN_file = SD.open("L/EAN_file.txt", FILE_WRITE);
+  log_file = SD.open("L/log_file.txt", FILE_WRITE);
+
+  l = SD.open(("SDLOG.txt", FILE_WRITE));
+
+  l.println("line.txt");
+l.close();
+
+  log_file.println("this is line 1");
+  log_file.println("this is line 2");
+  log_file.close();
+
+
+
+  
   Serial.println("setup successful");
 }
 
