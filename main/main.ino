@@ -10,33 +10,39 @@ void setup() {
   Serial.println("pronto");
 
 //--------------------------------------
-
-  if (!SD.begin(4)) {
+  
+   if (!SD.begin(4)) {
     Serial.println("initialization failed!");   //error check
   }
   
   sdLog = SD.open("gescandeBarcodes.txt");
-  if (sdLog) {
-    Serial.println("gescandeBarcodes.txt:");
+
+
+  Serial.print("Inhoud gescandeBarcodes.txt: ");
+  while (sdLog.available()) {
+    Serial.println("reading file");
+    fromFile = sdLog.read();
+    Serial.print(fromFile.c_str());
+    for(const char* p=fromFile.c_str(); *p; ) {
+      Serial.print(*p++);
   }
 
-  /*if (sdLog.available()){
+    sdLog.close();
+
+  }
+  /*
+  if (sdLog) {
+    Serial.println("gescandeBarcodes.txt:");
+    Serial.println(sdLog);
+  } */
+
+  /*if (sdLog.available()){  
       sdLog.write("3800103433425");
       Serial.println("Made new file and added barcode");
       }*/
-    
-  
-  Serial.print("Inhoud gescandeBarcodes.txt: ");
-    while (sdLog.available()) {
-      fromFile = sdLog.read();
-      Serial.print(fromFile.c_str());
-      for(const char* p=fromFile.c_str(); *p; ) {
-        Serial.print(*p++);
-  }
-    }
-    sdLog.close();
-    }
-
+      
+    //sdLog.close();
+}
 
 
 void loop() {
