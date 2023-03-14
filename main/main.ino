@@ -1,58 +1,35 @@
 #include <SPI.h>
 #include <SD.h>
 
-File sdLog;
+File file;
+String barcode;
 
 String fromFile;
 
+String writeToFile(File fileName, String dataToWrite) {
+  fileName.println(dataToWrite);
+  }
+
 void setup() {
   Serial.begin(9600);
-  Serial.println("pronto");
+  Serial.println("\npronto");
 
 //--------------------------------------
-  
+  Retry:
    if (!SD.begin(4)) {
     Serial.println("initialization failed!");   //error check
+    goto Retry;
   }
+  Serial.println("PRONTOOOOOOOO!!!!");
+
   
-  sdLog = SD.open("gescandeBarcodes.txt");
-
-
-  Serial.print("Inhoud gescandeBarcodes.txt: ");
-  while (sdLog.available()) {
-    Serial.println("reading file");
-    fromFile = sdLog.read();
-    Serial.print(fromFile.c_str());
-    for(const char* p=fromFile.c_str(); *p; ) {
-      Serial.print(*p++);
-  }
-
-    sdLog.close();
+  
+  file = SD.open("BarcodeTest.txt", FILE_WRITE);
+  writeToFile(file, barcode);
+  file.close();
 
   }
-  /*
-  if (sdLog) {
-    Serial.println("gescandeBarcodes.txt:");
-    Serial.println(sdLog);
-  } */
-
-  /*if (sdLog.available()){  
-      sdLog.write("3800103433425");
-      Serial.println("Made new file and added barcode");
-      }*/
-      
-    //sdLog.close();
-}
-
 
 void loop() {
-  /*
-  sdLog = SD.open("gescandeBarcodes.txt");
-  
-  while (sdLog.available()) {
-      fromFile = sdLog.read();}
-
-  if (sdLog) {
-    sdLog.println(fromFile);
-    sdLog.close();}*/
+  // dix-huit, dix-neuf, vingt
 }
