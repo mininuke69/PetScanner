@@ -1,18 +1,17 @@
 #include <SPI.h>
 #include <SD.h>
+#include <SoftwareSerial.h>
 
 File file;
 String barcode;
-
 String fromFile;
+SoftwareSerial ss(9, 8); // RX, TX
 
-String writeToFile(File fileName, String dataToWrite) {
-  fileName.println(dataToWrite);
-  }
 
 void setup() {
   Serial.begin(9600);
   Serial.println("\npronto");
+  ss.begin(9600);
 
 //--------------------------------------
   Retry:
@@ -22,10 +21,14 @@ void setup() {
   }
   Serial.println("PRONTOOOOOOOO!!!!");
 
+  /*if (ss.available()) {
+    barcode = ss.readString();}*/
+
+  barcode = "9715600243697";
   
-  
+  Serial.println(barcode);
   file = SD.open("BarcodeTest.txt", FILE_WRITE);
-  writeToFile(file, barcode);
+  file.println(barcode);
   file.close();
 
   }
