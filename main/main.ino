@@ -19,19 +19,17 @@ void setup() {
     Serial.println("initialization failed!");   //error check
     goto Retry;
   }
-  Serial.println("PRONTOOOOOOOO!!!!");
-
-  /*if (ss.available()) {
-    barcode = ss.readString();}*/
-
-  barcode = "9715600243697";
   
+  Serial.println("Verbinding gemaakt met de SD kaart");
+
+  barcode = "give";
+
   Serial.println(barcode);
-  file = SD.open("BarcodeTest.txt", FILE_WRITE);
+  file = SD.open("a.txt", FILE_WRITE);
   file.println(barcode);
   file.close();
-
-  }
+  Serial.println("Barcode naar file geprint");
+}
 
 void loop() {
   // dix-huit, dix-neuf, vingt
