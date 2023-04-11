@@ -22,7 +22,7 @@ void setup() {
   
   Serial.println("Verbinding gemaakt met de SD kaart");
 
-  barcode = "give";
+  barcode = "123456789012";
 
   Serial.println(barcode);
   file = SD.open("a.txt", FILE_WRITE);
