@@ -16,30 +16,18 @@ void SDSchrijf(String string, String fileNaam){
   file.close();
   }
 
-String SDLees(String fileNaam){
-  File file;
+bool SDLees(String fileNaam){
+  File file = SD.open(fileNaam);
   String inhoud = "";
-  char letter = '978020137962';
-  file = SD.open(fileNaam);
+  char letter = 'a';
+  bool found;
+  
   while (file.available()) {
-    Serial.println("ver");
     char a = file.read();
-    boolean found = file.find(letter);
-    if (found) {
-      inhoud = "Gevonden!";
-      Serial.println("gevonden");
-    } 
-    if (not found) {
-        inhoud = "Niet gevonden!";
-        Serial.println("niet gevonden");
-    }
-    //inhoud = inhoud + "x" + file.read();
-    //inhoud = inhoud + file.read(); //https://cplusplus.com/reference/cstdlib/itoa/
-    //Serial.print(file.readString());
-    //strncat(inhoud, file.read(), 2);
+    found = file.find(letter);
   }
   file.close();
-  return inhoud;
+  return found;
 }
 
 //----------------------------------------
@@ -56,12 +44,20 @@ void setup() {
     goto Retry;
   }
 
-  SDSchrijf("string", "a.txt");
+  //SDSchrijf("string", "a.txt");
   
   Serial.println("Barcode naar file geprint");
 //---------------------------------------
 
-  Serial.println(SDLees("a.txt"));
+  bool gevonden = SDLees("a.txt");
+
+  if (gevonden) {
+    Serial.println("C'est ici");
+    }
+  if (not gevonden) {
+    Serial.println("Ce n'est pas ici!");
+    }
+  
 }
 
 void loop() {
