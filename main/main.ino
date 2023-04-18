@@ -18,11 +18,25 @@ void SDSchrijf(String string, String fileNaam){
 
 String SDLees(String fileNaam){
   File file;
-  String inhoud;
+  String inhoud = "";
+  char letter = '978020137962';
   file = SD.open(fileNaam);
   while (file.available()) {
-    //inhoud = inhoud + "x" + String(file.read());
-    inhoud = inhoud + file.read(); //https://cplusplus.com/reference/cstdlib/itoa/
+    Serial.println("ver");
+    char a = file.read();
+    boolean found = file.find(letter);
+    if (found) {
+      inhoud = "Gevonden!";
+      Serial.println("gevonden");
+    } 
+    if (not found) {
+        inhoud = "Niet gevonden!";
+        Serial.println("niet gevonden");
+    }
+    //inhoud = inhoud + "x" + file.read();
+    //inhoud = inhoud + file.read(); //https://cplusplus.com/reference/cstdlib/itoa/
+    //Serial.print(file.readString());
+    //strncat(inhoud, file.read(), 2);
   }
   file.close();
   return inhoud;
