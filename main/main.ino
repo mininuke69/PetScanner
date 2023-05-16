@@ -19,7 +19,7 @@ void SDSchrijf(String string, String fileNaam){
 bool SDLees(String fileNaam){
   File file = SD.open(fileNaam);
   String inhoud = "";
-  char letter = '0717610243697';
+  String letter = "8715600243697";
   bool found;
   
   /*while (file.available()) {
@@ -27,9 +27,17 @@ bool SDLees(String fileNaam){
     found = file.find(letter); //!!!!!!! exit here   !!!!!!!
   }*/
 
-  found = file.find(letter);
+  //found = file.find(letter);
+  while (file.available()){
+    String wholeFile = file.readString();
+    Serial.println(wholeFile);
+    int index = wholeFile.indexOf(letter);
+    if (index != -1) {
+      Serial.println("String found");
+      return true;}
+  }
   file.close();
-  return found;
+  return false  ;
 }
 
 //----------------------------------------
