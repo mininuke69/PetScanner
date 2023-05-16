@@ -19,13 +19,15 @@ void SDSchrijf(String string, String fileNaam){
 bool SDLees(String fileNaam){
   File file = SD.open(fileNaam);
   String inhoud = "";
-  char letter = 'a';
+  char letter = '0717610243697';
   bool found;
   
-  while (file.available()) {
+  /*while (file.available()) {
     char a = file.read();
-    found = file.find(letter);
-  }
+    found = file.find(letter); //!!!!!!! exit here   !!!!!!!
+  }*/
+
+  found = file.find(letter);
   file.close();
   return found;
 }
@@ -44,7 +46,7 @@ void setup() {
     goto Retry;
   }
 
-  //SDSchrijf("string", "a.txt");
+  //SDSchrijf("z", "a.txt");
   
   Serial.println("Barcode naar file geprint");
 //---------------------------------------
@@ -52,10 +54,10 @@ void setup() {
   bool gevonden = SDLees("a.txt");
 
   if (gevonden) {
-    Serial.println("C'est ici");
+    Serial.println("Gevonden");
     }
   if (not gevonden) {
-    Serial.println("Ce n'est pas ici!");
+    Serial.println("Niet gevonden");
     }
   
 }
