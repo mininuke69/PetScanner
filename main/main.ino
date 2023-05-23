@@ -5,9 +5,30 @@
 File file;
 String barcode;
 String fromFile;
-SoftwareSerial ss(9, 8); // RX, TX
+//SoftwareSerial ss(9, 8); // RX, TX
+SoftwareSerial ss(9, 10); // RX (tx op ding) , TX (rx op ding) //10,11
 
 //----------------------------------------
+
+void ScanToken(){
+  Serial.println("barcode found in 'whitelisted' database");
+  Serial.println("Please scan your token (optional)");
+  
+  bool scanned = false;
+  // 15-second loop, waiting for a token
+  if (scanned){
+    Serial.println("thanks for scanning your token");
+    //add to log or give reward or whatever
+  }else{
+    Serial.println("you have not scanned your token");
+    //do nothing
+  }
+}
+
+bool Checkbanned(String username){
+  //if username is in banned list, return true
+  return false;
+}
 
 void SDSchrijf(String string, String fileNaam){
   File file;
@@ -29,7 +50,7 @@ bool SDLees(String fileNaam, String letter){
   //found = file.find(letter);
   while (file.available()){
     String wholeFile = file.readString();
-    Serial.println(wholeFile);
+    //Serial.println(wholeFile);
     int index = wholeFile.indexOf(letter);
     if (index != -1) {
       //Serial.println("String found");
@@ -56,7 +77,7 @@ void setup() {
   //SDSchrijf("z", "a.txt");
   
 //---------------------------------------
-  String gescandeBarcode = ss.readString();
+  /*String gescandeBarcode = ss.readString();
   Serial.println(gescandeBarcode);
   
   bool gevonden = SDLees("a.txt", gescandeBarcode);
@@ -67,11 +88,21 @@ void setup() {
   if (not gevonden) {
     Serial.println("Niet gevonden");
     }
-  
+  */
 }
 
 void loop() {
-  // dix-huit, dix-neuf, vingt
-  //char gescandeBarcode = ss.read();
-  //Serial.println(gescandeBarcode);
+  if (ss.available()){
+    String data = ss.readString();
+    Serial.println(data);
+    bool passed = SDLees("a.txt", data);
+
+    if (passed){   //code found
+      Serial.println("found");//ScanToken();
+    }else{         //code not found
+      //AddCode(data);*/
+      Serial.println("not found");
+    }
+
+  }
 }
