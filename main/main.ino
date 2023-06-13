@@ -1,6 +1,9 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SoftwareSerial.h>
+#include <Servo.h>
+
+Servo servo;
 
 File file;
 String barcode;
@@ -67,6 +70,9 @@ void setup() {
   Serial.println("\npronto");
   ss.begin(9600);
 
+  servo.attach(3);
+  servo.write(0);
+
 //--------------------------------------
   Retry:
    if (!SD.begin(4)) {
@@ -99,6 +105,13 @@ void loop() {
 
     if (passed){   //code found
       Serial.println("found");//ScanToken();
+      servo.write(100);
+      while(ss.available()) {
+        ss.read();
+        }
+      delay(1000);
+      servo.write(0);
+      delay(1000);
     }else{         //code not found
       //AddCode(data);*/
       Serial.println("not found");
