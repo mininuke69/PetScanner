@@ -99,19 +99,24 @@ void setup() {
 
 void loop() {
   if (ss.available()){
+    Serial.println("1");
     String data = ss.readString();
+    Serial.println("2");
     Serial.println(data);
     bool passed = SDLees("a.txt", data);
+    Serial.println("3");
 
     if (passed){   //code found
       Serial.println("found");//ScanToken();
+      ss.end();
       servo.write(100);
+      delay(1000);
+      servo.write(0);
+      ss.begin(9600);
+      delay(1000);
       while(ss.available()) {
         ss.read();
         }
-      delay(1000);
-      servo.write(0);
-      delay(1000);
     }else{         //code not found
       //AddCode(data);*/
       Serial.println("not found");
