@@ -45,18 +45,10 @@ bool SDLees(String fileNaam, String letter){
   String inhoud = "";
   bool found;
   
-  /*while (file.available()) {
-    char a = file.read();
-    found = file.find(letter); //!!!!!!! exit here   !!!!!!!
-  }*/
-
-  //found = file.find(letter);
   while (file.available()){
     String wholeFile = file.readString();
-    //Serial.println(wholeFile);
     int index = wholeFile.indexOf(letter);
     if (index != -1) {
-      //Serial.println("String found");
       return true;}
   }
   file.close();
