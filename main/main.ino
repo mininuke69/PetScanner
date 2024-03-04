@@ -3,6 +3,33 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
+/* Pins:
+barcode scanner:
+vcc -> 5v green
+gnd -> gnd black
+ss (9, 10) -> (tx purple, rx blue)
+
+card reader
+3v3 -> 3v3 purple
+gnd -> gnd black
+CS -> pin 4 orange
+SCK -> pin 13 green
+MISO -> pin 12 blue
+MOSI -> door 2k2 ohm pin 11 yellow
+
+servo
+data -> pin 3 orange
+gnd -> gnd black
++ -> extern + red 6V
+*/
+
+//pins def
+
+#define SERVO_DATA_PIN 3
+#define SD_CS 4
+#define SERVO_OPEN_ANGLE 0
+#define SERVO_CLOSED_ANGLE 100
+
 Servo servo;
 
 File file;
@@ -38,7 +65,7 @@ void SDSchrijf(String string, String fileNaam){
   file = SD.open(fileNaam, FILE_WRITE);
   file.println(string);
   file.close();
-  }
+}
 
 bool SDLees(String fileNaam, String letter){
   File file = SD.open(fileNaam);
@@ -49,10 +76,11 @@ bool SDLees(String fileNaam, String letter){
     String wholeFile = file.readString();
     int index = wholeFile.indexOf(letter);
     if (index != -1) {
-      return true;}
+      return true;
+    }
   }
   file.close();
-  return false  ;
+  return false;
 }
 
 //----------------------------------------
@@ -62,13 +90,13 @@ void setup() {
   Serial.println("\npronto");
   ss.begin(9600);
 
-  servo.attach(3);
-  servo.write(0);
+  servo.attach(SERVO_DATA_PIN);
+  servo.write(SERVO_CLOSED_ANGLE);
 
 //--------------------------------------
   Retry:
-   if (!SD.begin(4)) {
-    Serial.println("initialization failed!");   //error check
+   if (!SD.begin(SD_CS)) {
+    Serial.println("initialization failed!");
     goto Retry;
   }
 
@@ -91,19 +119,16 @@ void setup() {
 
 void loop() {
   if (ss.available()){
-    Serial.println("1");
     String data = ss.readString();
-    Serial.println("2");
-    Serial.println(data);
     bool passed = SDLees("a.txt", data);
-    Serial.println("3");
 
     if (passed){   //code found
+      Serial.println(data);
       Serial.println("found");//ScanToken();
       ss.end();
-      servo.write(100);
-      delay(1000);
-      servo.write(0);
+      servo.write(SERVO_OPEN_ANGLE);
+      delay(4000);
+      servo.write(SERVO_CLOSED_ANGLE);
       ss.begin(9600);
       delay(1000);
       while(ss.available()) {
@@ -113,6 +138,5 @@ void loop() {
       //AddCode(data);*/
       Serial.println("not found");
     }
-
   }
 }
