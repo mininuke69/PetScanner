@@ -3,6 +3,39 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//https://forum.arduino.cc/t/how-to-check-if-string-contains-given-word/280402
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Pins:
 barcode scanner:
 vcc -> 5v green
@@ -33,6 +66,9 @@ gnd -> gnd black
 Servo servo;
 
 File file;
+File cashedFile;
+String wholeCashedFile;
+
 String barcode;
 String fromFile;
 //SoftwareSerial ss(9, 8); // RX, TX
@@ -68,9 +104,15 @@ void SDSchrijf(String string, String fileNaam){
 }
 
 bool SDLees(String fileNaam, String letter){
-  File file = SD.open(fileNaam);
+  //File file = SD.open(fileNaam);
+  file = cashedFile;
   String inhoud = "";
   bool found;
+  Serial.println("---------------------------------");
+  Serial.println("SDLees");
+  Serial.println("---------------------------------");
+  Serial.print("File: ");
+  Serial.println(file);
   
   while (file.available()){
     String wholeFile = file.readString();
@@ -79,7 +121,8 @@ bool SDLees(String fileNaam, String letter){
       return true;
     }
   }
-  file.close();
+
+  //file.close();
   return false;
 }
 
@@ -100,6 +143,16 @@ void setup() {
     goto Retry;
   }
 
+  file =  SD.open("a.txt");
+
+  cashedFile = file;
+  String read;
+  while (file && read != "-1") {
+    read = file.read();
+    Serial.print(read);
+  }
+  file.close();
+
   //SDSchrijf("z", "a.txt");
   
 //---------------------------------------
@@ -119,8 +172,13 @@ void setup() {
 
 void loop() {
   if (ss.available()){
+    Serial.println("ss avail");
     String data = ss.readString();
+    Serial.println("Read string");
     bool passed = SDLees("a.txt", data);
+
+    Serial.print("Read string, passed: ");
+    Serial.println(passed);
 
     if (passed){   //code found
       Serial.println(data);
