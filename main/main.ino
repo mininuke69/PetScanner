@@ -89,7 +89,7 @@ bool SDLees(String letter){
 void setup() {
   Serial.begin(9600);
   Serial.println("\npronto");
-  ss.begin(9600);
+  ss.begin(57600);
 
   servo.attach(servo_data_pin);
   servo.write(0);
@@ -117,11 +117,11 @@ void loop() {
 
     if (passed){   //code found
       Serial.println("found");//ScanToken();
-      ss.end();
+      //ss.end();
       servo.write(100);
       delay(1000);
       servo.write(0);
-      ss.begin(9600);
+      //ss.begin(9600);
       delay(1000);
       while(ss.available()) {
         ss.read();
