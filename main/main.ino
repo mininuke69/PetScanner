@@ -3,13 +3,46 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
+
+/* Pins:
+barcode scanner:
+vcc -> 5v green
+gnd -> gnd black
+ss (9, 10) -> (tx purple, rx blue)
+
+card reader
+3v3 -> 3v3 purple
+gnd -> gnd black
+CS -> pin 4 orange
+SCK -> pin 13 green
+MISO -> pin 12 blue
+MOSI -> door 2k2 ohm pin 11 yellow
+
+servo
+data -> pin 3 orange
+gnd -> gnd black
++ -> extern + red 6V
+*/
+
+
+
+// DEFINE PINS
+#define servo_data_pin 3
+#define scanner_rx_pin 9
+#define scanner_tx_pin 10
+#define sd_chipselect_pin 4
+#define servo_open_angle 0
+#define servo_closed_angle 180
+
+
 Servo servo;
 
 File file;
 String barcode;
 String fromFile;
-//SoftwareSerial ss(9, 8); // RX, TX
-SoftwareSerial ss(9, 10); // RX (tx op ding) , TX (rx op ding) //10,11
+SoftwareSerial ss(scanner_rx_pin, scanner_tx_pin); // RX (tx op ding) , TX (rx op ding) //10,11
+
+
 
 //----------------------------------------
 
@@ -62,31 +95,15 @@ void setup() {
   Serial.println("\npronto");
   ss.begin(9600);
 
-  servo.attach(3);
+  servo.attach(servo_data_pin);
   servo.write(0);
 
 //--------------------------------------
   Retry:
-   if (!SD.begin(4)) {
+   if (!SD.begin(sd_pin)) {
     Serial.println("initialization failed!");   //error check
     goto Retry;
   }
-
-  //SDSchrijf("z", "a.txt");
-  
-//---------------------------------------
-  /*String gescandeBarcode = ss.readString();
-  Serial.println(gescandeBarcode);
-  
-  bool gevonden = SDLees("a.txt", gescandeBarcode);
-
-  if (gevonden) {
-    Serial.println("Gevonden");
-    }
-  if (not gevonden) {
-    Serial.println("Niet gevonden");
-    }
-  */
 }
 
 void loop() {
