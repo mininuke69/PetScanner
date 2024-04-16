@@ -100,7 +100,7 @@ void setup() {
 
 //--------------------------------------
   Retry:
-   if (!SD.begin(sd_pin)) {
+   if (!SD.begin(sd_chipselect_pin)) {
     Serial.println("initialization failed!");   //error check
     goto Retry;
   }
