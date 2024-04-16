@@ -75,17 +75,18 @@ void SDSchrijf(String string, String fileNaam){
 
 bool SDLees(String fileNaam, String letter){
   File file = SD.open(fileNaam);
-  String inhoud = "";
-  bool found;
   
   while (file.available()){
     String wholeFile = file.readString();
     int index = wholeFile.indexOf(letter);
+    Serial.print("Wholefile: ");
+    Serial.println(wholeFile);
     if (index != -1) {
-      return true;}
+      return true;
+    }
   }
   file.close();
-  return false  ;
+  return false;
 }
 
 //----------------------------------------
