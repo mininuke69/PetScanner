@@ -34,10 +34,12 @@ gnd -> gnd black
 #define servo_open_angle 0
 #define servo_closed_angle 180
 
+#define fileName "a.txt"
 
 Servo servo;
 
 File file;
+String wholeFile;
 String barcode;
 String fromFile;
 SoftwareSerial ss(scanner_rx_pin, scanner_tx_pin); // RX (tx op ding) , TX (rx op ding) //10,11
@@ -73,17 +75,10 @@ void SDSchrijf(String string, String fileNaam){
   file.close();
   }
 
-bool SDLees(String fileNaam, String letter){
-  File file = SD.open(fileNaam);
-  
-  while (file.available()){
-    String wholeFile = file.readString();
-    int index = wholeFile.indexOf(letter);
-    Serial.print("Wholefile: ");
-    Serial.println(wholeFile);
-    if (index != -1) {
-      return true;
-    }
+bool SDLees(String letter){  
+  int index = wholeFile.indexOf(letter);
+  if (index != -1) {
+    return true;
   }
   file.close();
   return false;
@@ -105,6 +100,9 @@ void setup() {
     Serial.println("initialization failed!");   //error check
     goto Retry;
   }
+
+  File file = SD.open(fileName);
+  wholeFile = file.readString();
 }
 
 void loop() {
@@ -113,7 +111,7 @@ void loop() {
     String data = ss.readString();
     Serial.println("2");
     Serial.println(data);
-    bool passed = SDLees("a.txt", data);
+    bool passed = SDLees(data);
     Serial.println("3");
 
     if (passed){   //code found
