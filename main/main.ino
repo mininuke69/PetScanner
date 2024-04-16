@@ -108,7 +108,8 @@ void setup() {
 void loop() {
   if (ss.available()){
     Serial.println("1");
-    String data = ss.readString();
+    //String data = ss.readString();
+    String data = ss.readStringUntil('-');
     Serial.println("2");
     Serial.println(data);
     bool passed = SDLees(data);
