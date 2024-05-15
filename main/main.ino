@@ -4,7 +4,11 @@
 #include <Servo.h>
 
 
-/* Pins:
+/* 
+Useful links
+https://files.waveshare.com/upload/d/dd/Barcode_Scanner_Module_Setting_Manual_EN.pdf
+
+Pins:
 barcode scanner:
 vcc -> 5v green
 gnd -> gnd black
@@ -27,8 +31,8 @@ gnd -> gnd black
 
 
 // DEFINE PINS
-#define servo_data_pin 3
-#define scanner_rx_pin 9
+#define servo_data_pin 9
+#define scanner_rx_pin 6
 #define scanner_tx_pin 10
 #define sd_chipselect_pin 4
 #define servo_open_angle 0
@@ -89,7 +93,8 @@ bool SDLees(String letter){
 void setup() {
   Serial.begin(9600);
   Serial.println("\npronto");
-  ss.begin(57600);
+  ss.begin(9600);
+  ss.setTimeout(10);
 
   servo.attach(servo_data_pin);
   servo.write(0);
@@ -122,7 +127,6 @@ void loop() {
       delay(1000);
       servo.write(0);
       //ss.begin(9600);
-      delay(1000);
       while(ss.available()) {
         ss.read();
         }
